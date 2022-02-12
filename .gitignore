@@ -1,0 +1,6 @@
+env.sh
+.cache/
+compile_commands.json
+.misc/
+build*/
+cmake-*/

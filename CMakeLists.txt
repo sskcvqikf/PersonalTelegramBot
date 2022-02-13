@@ -19,6 +19,7 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
     "src/network/*.cc"
     "src/handlers/*.cc"
     "src/todo_storage/*.cc"
+    "src/errors/*.cc"
 )
 
 add_executable(main

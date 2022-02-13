@@ -19,14 +19,14 @@ function(compile_proto filename)
   )
 endfunction(compile_proto)
 
-file(GLOB_RECURSE Proto_SRCS CONFIGURE_DEPENDS
+file(GLOB_RECURSE PROTOBUF_SRCS CONFIGURE_DEPENDS
   "${PROTOBUF_DIR}/*.proto"
 )
 
-foreach(proto ${Proto_SRCS})
-  get_filename_component(basename ${proto} NAME_WE)
-  compile_proto(${proto})
-  set(PROTO_GENERATED ${PROTO_GENERATED}
+foreach(protofile ${PROTOBUF_SRCS})
+  get_filename_component(basename ${protofile} NAME_WE)
+  compile_proto(${protofile})
+  set(PROTOBUF_GENERATED ${PROTOBUF_GENERATED}
     ${PROTOBUF_CPP_OUT_DIR}/${basename}.pb.cc
   )
 endforeach(proto)

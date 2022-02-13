@@ -22,7 +22,7 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
 )
 
 add_executable(main
-  src/main.cc ${SRCS} ${PROTO_GENERATED}
+  src/main.cc ${SRCS} ${PROTOBUF_GENERATED}
 )
 
 target_include_directories(main PUBLIC

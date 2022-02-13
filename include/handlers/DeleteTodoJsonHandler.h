@@ -7,7 +7,7 @@
 
 class DeleteTodoJsonHandler : public JsonHandler {
  public:
-  explicit DeleteTodoJsonHandler(TodoStorage& storage_);
+  explicit DeleteTodoJsonHandler(TodoStorage& storage_) noexcept;
   Json Handle(const Json& json) override;
 
  private:

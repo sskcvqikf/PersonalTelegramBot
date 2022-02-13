@@ -10,11 +10,11 @@ class IdGenerator {
   static_assert(std::is_integral_v<Id>, "Id must be an integral type");
 
  public:
-  IdGenerator() noexcept : IdGenerator({}) {}
+  constexpr IdGenerator() noexcept : IdGenerator({}) {}
 
-  explicit IdGenerator(Id start) noexcept : last_id_(start) {}
+  constexpr explicit IdGenerator(Id start) noexcept : last_id_(start) {}
 
-  Id GetNextId() { return last_id_++; }
+  constexpr Id GetNextId() { return last_id_++; }
 
  private:
   Id last_id_;

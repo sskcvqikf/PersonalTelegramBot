@@ -7,7 +7,7 @@
 
 class GetAllTodoJsonHandler : public JsonHandler {
  public:
-  explicit GetAllTodoJsonHandler(TodoStorage& storage);
+  explicit GetAllTodoJsonHandler(TodoStorage& storage) noexcept;
   Json Handle(const Json& json) override;
 
  private:

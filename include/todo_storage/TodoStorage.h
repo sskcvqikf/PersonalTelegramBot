@@ -11,7 +11,7 @@ using TodoVector = std::vector<Todo>;
 
 class TodoStorage final {
  private:
-  using Storage = std::unordered_map<std::uint32_t, std::string>;
+  using Storage = std::unordered_map<uint32_t, std::string>;
   using IdGenerator = IdGenerator<uint32_t>;
 
  public:

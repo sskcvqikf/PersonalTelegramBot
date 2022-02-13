@@ -7,7 +7,7 @@
 
 class AddTodoJsonHandler : public JsonHandler {
  public:
-  explicit AddTodoJsonHandler(TodoStorage& storage);
+  explicit AddTodoJsonHandler(TodoStorage& storage) noexcept;
   Json Handle(const Json& request) override;
 
  private:

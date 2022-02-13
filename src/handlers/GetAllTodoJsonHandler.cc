@@ -1,10 +1,10 @@
 #include "handlers/GetAllTodoJsonHandler.h"
 
-GetAllTodoJsonHandler::GetAllTodoJsonHandler(TodoStorage& storage)
+GetAllTodoJsonHandler::GetAllTodoJsonHandler(TodoStorage& storage) noexcept
     : storage_(storage) {}
 
 Json GetAllTodoJsonHandler::Handle(const Json& request) {
-  auto todos = storage_.GetAll();
+  auto const todos = storage_.GetAll();
 
   std::string message;
 

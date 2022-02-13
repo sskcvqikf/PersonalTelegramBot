@@ -29,5 +29,5 @@ foreach(protofile ${PROTOBUF_SRCS})
   set(PROTOBUF_GENERATED ${PROTOBUF_GENERATED}
     ${PROTOBUF_CPP_OUT_DIR}/${basename}.pb.cc
   )
-endforeach(proto)
+endforeach(protofile)
 

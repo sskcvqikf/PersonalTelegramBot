@@ -32,16 +32,3 @@ const BotErrorCategory& GetBotErrorCategory() {
 std::error_code make_error_code(BotError e) {
   return {static_cast<int>(e), GetBotErrorCategory()};
 }
-
-namespace tl {
-bad_expected_access<std::error_code>::bad_expected_access(
-    std::error_code code) {
-  error += code.category().name();
-  error += ": ";
-  error += code.category().message(code.value());
-}
-
-const char* bad_expected_access<std::error_code>::what() const noexcept {
-  return error.c_str();
-}
-}  // namespace tl

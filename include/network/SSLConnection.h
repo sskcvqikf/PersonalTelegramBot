@@ -23,14 +23,14 @@ class SSLConnection final {
  public:
   explicit SSLConnection(Socket&& socket, SSLContext& context);
 
-  StringBodyHttpRequest GetRequest();
+  std::optional<StringBodyHttpRequest> GetRequest();
 
   void SendResponse(StringBodyHttpResponse response);
 
  private:
   Socket socket_;
   SSLContext& context_;
-  std::optional<SSLStream<Socket&>> last_stream_;
+  SSLStream<Socket&> stream_;
 };
 
 #endif  // PDBOT_SSLCONNECTION_H_

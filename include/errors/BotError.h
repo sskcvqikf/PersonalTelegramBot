@@ -23,4 +23,7 @@ std::error_code make_error_code(BotError);
 template <typename T>
 using Result = tl::expected<T, std::error_code>;
 
+template <typename T>
+using ResultRef = tl::expected<std::reference_wrapper<T>, std::error_code>;
+
 #endif  // PDBOT_BOTERROR_H_

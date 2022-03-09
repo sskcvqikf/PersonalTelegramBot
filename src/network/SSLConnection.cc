@@ -11,17 +11,23 @@ using HttpSerializer = boost::beast::http::serializer<isRequest, Body, Fields>;
 constexpr auto const kServerHandshake = boost::asio::ssl::stream_base::server;
 
 SSLConnection::SSLConnection(Socket&& socket, SSLContext& context)
-    : socket_(std::move(socket)), context_(context) {}
+    : socket_(std::move(socket)),
+      context_(context),
+      stream_(socket_, context_) {
+  stream_.handshake(kServerHandshake);
+}
 
-StringBodyHttpRequest SSLConnection::GetRequest() {
-  SSLStream<Socket&> stream{socket_, context_};
-  stream.handshake(kServerHandshake);
-
+std::optional<StringBodyHttpRequest> SSLConnection::GetRequest() {
   FlatBuffer buffer;
   StringBodyHttpRequest request;
-  boost::beast::http::read(stream, buffer, request);
+  boost::beast::error_code ec;
+  boost::beast::http::read(stream_, buffer, request, ec);
 
-  last_stream_ = std::move(stream);
+  if (request.need_eof() or ec == boost::beast::http::error::end_of_stream) {
+    stream_.shutdown(ec);
+    return {};
+  }
+  std::cout << request.body() << std::endl;
   return request;
 }
 
@@ -31,5 +37,5 @@ void SSLConnection::SendResponse(StringBodyHttpResponse response) {
                  StringBodyHttpResponse::fields_type>
       serializer(response);
 
-  boost::beast::http::write(last_stream_.value(), serializer);
+  boost::beast::http::write(stream_, serializer);
 }

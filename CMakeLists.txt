@@ -21,6 +21,7 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
     "src/todo_storage/*.cc"
     "src/errors/*.cc"
     "src/utils/*.cc"
+    "src/validator/*.cc"
 )
 
 add_executable(main

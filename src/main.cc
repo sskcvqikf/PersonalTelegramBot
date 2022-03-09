@@ -7,10 +7,10 @@
 #include "handlers/DeleteTodoJsonHandler.h"
 #include "handlers/EchoJsonHandler.h"
 #include "handlers/GetAllTodoJsonHandler.h"
-#include "handlers/JsonValidatorHandler.h"
 #include "handlers/RequestHandler.h"
 #include "network/ConnectionAcceptor.h"
 #include "todo_storage/TodoStorage.h"
+#include "validator/JsonValidator.h"
 
 void Handle(SSLConnection&& ssl_connection, RequestHandler& request_handler) {
   auto request = ssl_connection.GetRequest();
@@ -45,7 +45,7 @@ int main() {
 
   TodoStorage todo_storage;
 
-  JsonValidatorHandler json_validator_handler;
+  JsonValidator json_validator_handler;
   RequestHandler request_handler(std::move(json_validator_handler));
   request_handler.RegisterHandler("echo", std::make_unique<EchoJsonHandler>());
   request_handler.RegisterHandler(

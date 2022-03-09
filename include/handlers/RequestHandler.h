@@ -8,7 +8,7 @@
 
 #include "errors/BotError.h"
 #include "handlers/JsonHandler.h"
-#include "handlers/JsonValidatorHandler.h"
+#include "validator/JsonValidator.h"
 
 using StringBodyHttpRequest =
     boost::beast::http::request<boost::beast::http::string_body>;
@@ -20,7 +20,7 @@ class RequestHandler final {
   using HandlersStorage =
       std::unordered_map<std::string, std::unique_ptr<JsonHandler>>;
 
-  explicit RequestHandler(JsonValidatorHandler json_validator_handler);
+  explicit RequestHandler(JsonValidator json_validator_handler);
 
   void RegisterHandler(std::string prefix,
                        std::unique_ptr<JsonHandler> handler);
@@ -28,7 +28,7 @@ class RequestHandler final {
   StringBodyHttpResponse Handle(const StringBodyHttpRequest& request);
 
  private:
-  JsonValidatorHandler json_validator_handler_;
+  JsonValidator json_validator_;
   HandlersStorage handlers_;
 };
 

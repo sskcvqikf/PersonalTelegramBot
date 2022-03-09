@@ -10,8 +10,8 @@ StringBodyHttpResponse CreatePayload(const StringBodyHttpRequest& request,
   return ret;
 }
 
-RequestHandler::RequestHandler(JsonValidatorHandler json_validator_handler)
-    : json_validator_handler_(std::move(json_validator_handler)) {}
+RequestHandler::RequestHandler(JsonValidator json_validator)
+    : json_validator_(std::move(json_validator)) {}
 
 void RequestHandler::RegisterHandler(std::string prefix,
                                      std::unique_ptr<JsonHandler> handler) {
@@ -22,7 +22,7 @@ StringBodyHttpResponse RequestHandler::Handle(
     const StringBodyHttpRequest& request) {
   Json json = nlohmann::json::parse(request.body());
 
-  auto handler = json_validator_handler_.ValidateAndGetHandler(json, handlers_);
+  auto handler = json_validator_.ValidateAndGetHandler(json, handlers_);
 
   if (!handler) {
     return CreatePayload(request, std::move(handler).error());

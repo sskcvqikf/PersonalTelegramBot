@@ -8,7 +8,7 @@ struct BotErrorCategory : public std::error_category {
   std::string message(int ev) const override;
 };
 
-const char* BotErrorCategory::name() const noexcept { return "flights"; }
+const char* BotErrorCategory::name() const noexcept { return "bot"; }
 
 std::string BotErrorCategory::message(int ev) const {
   switch (static_cast<BotError>(ev)) {
@@ -19,7 +19,7 @@ std::string BotErrorCategory::message(int ev) const {
     case BotError::kUnsupportedCommand:
       return "Given command isn't supported";
     case BotError::kUserIsNotAllowed:
-      return "Uebivay";
+      return "Access denied";
     default:
       assert(false);
   }

@@ -1,7 +1,6 @@
 #include "network/SSLConnection.h"
 
 #include <boost/beast/core/flat_buffer.hpp>
-#include <iostream>
 
 using FlatBuffer = boost::beast::flat_buffer;
 
@@ -27,7 +26,6 @@ std::optional<StringBodyHttpRequest> SSLConnection::GetRequest() {
     stream_.shutdown(ec);
     return {};
   }
-  std::cout << request.body() << std::endl;
   return request;
 }
 

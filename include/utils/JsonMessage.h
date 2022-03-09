@@ -8,6 +8,6 @@
 using Json = nlohmann::json;
 
 std::optional<std::string> RemoveCommandFromMessage(const std::string& message,
-                                                    Json entity);
+                                                    const Json& entity);
 
 #endif  // PDBOT_JSONMESSAGE_H_

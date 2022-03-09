@@ -1,10 +1,8 @@
 #include "handlers/RequestHandler.h"
 
-#include <iostream>
-
 StringBodyHttpResponse CreatePayload(const StringBodyHttpRequest& request,
                                      const Json& json) {
-  StringBodyHttpResponse ret{boost::beast::http::status::ok, request.version()};
+  StringBodyHttpResponse ret(boost::beast::http::status::ok, request.version());
   ret.set(boost::beast::http::field::content_type, "application/json");
   ret.keep_alive(request.keep_alive());
   ret.body() = json.dump();

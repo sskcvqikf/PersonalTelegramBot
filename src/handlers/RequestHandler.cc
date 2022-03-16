@@ -1,5 +1,18 @@
 #include "handlers/RequestHandler.h"
 
+StringBodyHttpResponse CreatePayload(const StringBodyHttpRequest& request,
+                                     const Json& json) {
+  StringBodyHttpResponse ret(boost::beast::http::status::ok, request.version());
+  ret.set(boost::beast::http::field::content_type, "application/json");
+  ret.keep_alive(request.keep_alive());
+  ret.body() = json.dump();
+  ret.prepare_payload();
+  return ret;
+}
+
+RequestHandler::RequestHandler(JsonValidator json_validator)
+    : json_validator_(std::move(json_validator)) {}
+
 void RequestHandler::RegisterHandler(std::string prefix,
                                      std::unique_ptr<JsonHandler> handler) {
   handlers_.insert({std::move(prefix), std::move(handler)});
@@ -8,21 +21,13 @@ void RequestHandler::RegisterHandler(std::string prefix,
 StringBodyHttpResponse RequestHandler::Handle(
     const StringBodyHttpRequest& request) {
   Json json = nlohmann::json::parse(request.body());
-  auto message = json["message"]["text"].get<std::string>();
-  auto entry = *json["message"]["entities"].begin();
-  if (entry["type"] == "bot_command") {
-    auto prefix = message.substr(entry["offset"].get<int>() + 1,
-                                 entry["length"].get<int>() - 1);
-    if (auto found = handlers_.find(prefix); found != handlers_.end()) {
-      auto response_json = found->second->Handle(json);
-      StringBodyHttpResponse response{boost::beast::http::status::ok,
-                                      request.version()};
-      response.set(boost::beast::http::field::content_type, "application/json");
-      response.keep_alive(request.keep_alive());
-      response.body() = response_json.dump();
-      response.prepare_payload();
-      return response;
-    }
+
+  auto handler = json_validator_.ValidateAndGetHandler(json, handlers_);
+
+  if (!handler) {
+    return CreatePayload(request, std::move(handler).error());
   }
-  throw std::runtime_error("No such hanler");
+
+  auto ret = (*handler)->Handle(json);
+  return CreatePayload(request, ret);
 }

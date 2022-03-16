@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "Todo.pb.h"
+#include "errors/BotError.h"
 #include "todo_storage/IdGenerator.h"
 
 using TodoVector = std::vector<Todo>;
@@ -19,10 +20,10 @@ class TodoStorage final {
 
   TodoStorage();
 
-  void AddTodo(std::string name);
-  void DeleteTodo(uint32_t id);
+  Result<void> AddTodo(std::string name);
+  Result<void> DeleteTodo(uint32_t id);
 
-  TodoVector GetAll() const;
+  Result<TodoVector> GetAll() const;
 
  private:
   IdGenerator id_generator_;

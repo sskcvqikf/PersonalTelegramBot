@@ -8,7 +8,7 @@ Json GetAllTodoJsonHandler::Handle(const Json& request) {
 
   std::string message;
 
-  for (const auto& i : todos) {
+  for (const auto& i : *todos) {
     message += std::to_string(i.id()) + ": " + i.task() + '\n';
   }
 

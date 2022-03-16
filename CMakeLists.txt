@@ -19,6 +19,9 @@ file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
     "src/network/*.cc"
     "src/handlers/*.cc"
     "src/todo_storage/*.cc"
+    "src/errors/*.cc"
+    "src/utils/*.cc"
+    "src/validator/*.cc"
 )
 
 add_executable(main
@@ -31,12 +34,14 @@ target_include_directories(main PUBLIC
   ${OPENSSL_INCLUDE_DIR}
   ${PROTOBUF_INCLUDE_DIR}
   ${PROTOBUF_CPP_OUT_DIR}
+  ${tl_expected_INCLUDE_DIR}
 )
 
 target_link_libraries(main PUBLIC
   ${Boost_LIBRARIES}
   ${OPENSSL_LIBRARIES}
   ${PROTOBUF_LIBRARIES}
+  ${tl_expected_LIBRARIES}
   Threads::Threads
   nlohmann_json::nlohmann_json
 )

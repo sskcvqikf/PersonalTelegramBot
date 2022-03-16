@@ -9,17 +9,19 @@ TodoStorage::TodoStorage(IdGenerator id_generator_, TodoVector todos)
 
 TodoStorage::TodoStorage() : TodoStorage({}, {}) {}
 
-void TodoStorage::AddTodo(std::string name) {
+Result<void> TodoStorage::AddTodo(std::string name) {
   storage_.insert({id_generator_.GetNextId(), std::move(name)});
+  return {};
 }
 
-void TodoStorage::DeleteTodo(uint32_t id) {
+Result<void> TodoStorage::DeleteTodo(uint32_t id) {
   if (auto found = storage_.find(id); found != storage_.end()) {
     storage_.erase(found);
   }
+  return {};
 }
 
-TodoVector TodoStorage::GetAll() const {
+Result<TodoVector> TodoStorage::GetAll() const {
   TodoVector ret;
   ret.reserve(storage_.size());
   for (const auto& i : storage_) {

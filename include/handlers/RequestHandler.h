@@ -3,9 +3,12 @@
 #pragma once
 
 #include <boost/beast/http.hpp>
+#include <functional>
 #include <unordered_map>
 
+#include "errors/BotError.h"
 #include "handlers/JsonHandler.h"
+#include "validator/JsonValidator.h"
 
 using StringBodyHttpRequest =
     boost::beast::http::request<boost::beast::http::string_body>;
@@ -14,13 +17,19 @@ using StringBodyHttpResponse =
 
 class RequestHandler final {
  public:
+  using HandlersStorage =
+      std::unordered_map<std::string, std::unique_ptr<JsonHandler>>;
+
+  explicit RequestHandler(JsonValidator json_validator_handler);
+
   void RegisterHandler(std::string prefix,
                        std::unique_ptr<JsonHandler> handler);
 
   StringBodyHttpResponse Handle(const StringBodyHttpRequest& request);
 
  private:
-  std::unordered_map<std::string, std::unique_ptr<JsonHandler>> handlers_;
+  JsonValidator json_validator_;
+  HandlersStorage handlers_;
 };
 
 #endif  // PDBOT_REQUESTHANDLER_H_
